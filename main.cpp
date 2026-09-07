@@ -9,12 +9,12 @@ int main() {
 }
 
 
-int calculate_prefix(char* input){
-    int oper = input[0]; // ex. "+", "-", "/", "*"
+int calculate_prefix(char input[]){
+    char oper = input[0]; // ex. "+", "-", "/", "*"
 
     // is the next character an operator or a number?
-    if input[1] == oper {
-        calculate(input[1:-1])
+    if (input[1] == '+' | '-' | '/' | '*') {
+        calculate_prefix(input[1:-1])
         // ex. [ + 20 30 40 ]
     }
     elif input[1] == number {
