@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <cassert>
 #include <print>
 #include <format>
 #include <sstream>
@@ -22,15 +21,32 @@ int calculate_prefix(char input[]){
     if (input[1] == ('+' | '-' | '/' | '*')) {
         calculate_prefix(&input[1]); //passing, C-style, as a pointer
         // ex. [ + 20 30 40 ]
+        //
+        std::stringstream ss;
+        std::string s = "input[1] == ('+' | '-' | '/' | '*')";
+        std::cout << s << '\n';
+        
     }
     else if (std::isdigit(input[1])) {
         num1 = input[1];
+        //
+        std::stringstream ss;
+        std::string s = "else if (std::isdigit(input[1]))";
+        std::cout << s << '\n';
     }
     if (input[2] == ('+' | '-' | '/' | '*')){ 
         calculate_prefix(&input[2]);
+        //
+        std::stringstream ss;
+        std::string s = "input[2] == ('+' | '-' | '/' | '*')";
+        std::cout << s << '\n';
     }
     else if (std::isdigit(input[2])) {
         num2 = input[2]; 
+        //
+        std::stringstream ss;
+        std::string s = "std::isdigit(input[2])";
+        std::cout << s << '\n';
     }
     // are num1 and num2 both numbers? 
     // if (num1 != -1 and num2 != -1) { 
