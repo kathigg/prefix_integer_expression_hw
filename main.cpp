@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 
 // Code for COSC 3010
 
@@ -10,23 +10,23 @@ int main() {
 
 
 int calculate_prefix(char* input){
-    int operator = int(input[0]); 
+    int oper = input[0]; // ex. "+", "-", "/", "*"
 
     // is the next character an operator or a number?
-    if input[1] == operator {
+    if input[1] == oper {
         calculate(input[1:-1])
         // ex. [ + 20 30 40 ]
     }
     elif input[1] == number {
         int num1 = input[1]
     }
-    if input[2] == operator{ 
+    if input[2] == oper{ 
         ca;ci;ate(input[2:-1]) 
     }
     elif input[2] == number {
         num2 == input[2]
     }
     if num1 == number and num2 == number {
-        return int(num1 + operator + num2) 
+        return int(num1 + oper + num2) 
     }
 } 
