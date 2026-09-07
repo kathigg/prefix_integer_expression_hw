@@ -12,21 +12,28 @@ int main() {
 int calculate_prefix(char input[]){
     char oper = input[0]; // ex. "+", "-", "/", "*"
 
+    // because we know we're only handling positive numbers,
+    // it's safe to be able to set these two to -1 when not initalized 
+    // to an actual num1 or num2 value
+    int num1 = -1; 
+    int num2 = -1;
+
     // is the next character an operator or a number?
     if (input[1] == '+' | '-' | '/' | '*') {
-        calculate_prefix(input[1:-1])
+        calculate_prefix(&input[1]); //passing, C-style, as a pointer
         // ex. [ + 20 30 40 ]
     }
-    elif input[1] == number {
-        int num1 = input[1]
+    else if (std::isdigit(input[1])) {
+        num1 = input[1];
     }
-    if input[2] == oper{ 
-        ca;ci;ate(input[2:-1]) 
+    if (input[2] == '+' | '-' | '/' | '*'){ 
+        calculate_prefix(&input[2]);
     }
-    elif input[2] == number {
-        num2 == input[2]
+    else if (std::isdigit(input[2])) {
+        num2 = input[2]; 
     }
-    if num1 == number and num2 == number {
-        return int(num1 + oper + num2) 
+    // are num1 and num2 both numbers? 
+    if (num1 != -1 and num2 != -1) { 
+        return int(num1 + oper + num2);
     }
 } 
