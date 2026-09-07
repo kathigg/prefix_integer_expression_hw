@@ -53,7 +53,7 @@ int main() {
 
     // printing results 
     std::stringstream ss;
-    ss << "expected: " << expected << "output:  " << (expected == (calculate_prefix(testarr)));
+    ss << "expected: " << expected << " output:  " << (calculate_prefix(testarr));
     std::string s = ss.str();
     std::cout << s << '\n';
     //===TEST 2=======//
