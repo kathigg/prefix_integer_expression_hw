@@ -3,82 +3,85 @@
 #include <print>
 #include <format>
 #include <sstream>
+# include "tinyexpr.h"
 
 // Code for COSC 3010
 
-
-
-int calculate_prefix(char input[]){
-    char oper = input[0]; // ex. "+", "-", "/", "*"
-
-    // because we know we're only handling positive numbers,
-    // it's safe to be able to set these two to -1 when not initalized 
-    // to an actual num1 or num2 value
-    int num1 = -1; 
-    int num2 = -1;
-
-    // is the next character an operator or a number?
-    if (input[1] == ('+' | '-' | '/' | '*')) {
-        calculate_prefix(&input[1]); //passing, C-style, as a pointer
-        // ex. [ + 20 30 40 ]
-        //
-        std::stringstream ss;
-        std::string s = "input[1] == ('+' | '-' | '/' | '*')";
-        std::cout << s << '\n';
-        
+int calculate_prefix(const std::string& input, int& position) {
+    // Skip spaces between prefix-expression tokens.
+    while (input[position] == ' ') {
+        ++position;
     }
-    else if (std::isdigit(input[1])) {
-        num1 = input[1];
-        //
-        std::stringstream ss;
-        std::string s = "else if (std::isdigit(input[1]))";
-        std::cout << s << '\n';
-    }
-    if (input[2] == ('+' | '-' | '/' | '*')){ 
-        calculate_prefix(&input[2]);
-        //
-        std::stringstream ss;
-        std::string s = "input[2] == ('+' | '-' | '/' | '*')";
-        std::cout << s << '\n';
-    }
-    else if (std::isdigit(input[2])) {
-        num2 = input[2]; 
-        //
-        std::stringstream ss;
-        std::string s = "std::isdigit(input[2])";
-        std::cout << s << '\n';
-    }
-    // are num1 and num2 both numbers? 
-    // if (num1 != -1 and num2 != -1) { 
-    return int(num1 + oper + num2);
-    // }
 
-} 
+    // Read a complete positive number, including multi-digit numbers.
+    if (std::isdigit(static_cast<unsigned char>(input[position]))) {
+        int number = 0;
+        while (std::isdigit(static_cast<unsigned char>(input[position]))) {
+            number = number * 10 + input[position++] - '0';
+        }
+        return number;
+    }
+
+    // Read the operator and recursively evaluate both operands.
+    char oper = input[position++];
+    int num1 = calculate_prefix(input, position);
+    int num2 = calculate_prefix(input, position);
+
+    // Convert the parsed operands into an expression for tinyexpr.
+    std::string expression = std::to_string(num1) + oper + std::to_string(num2);
+    int error = 0;
+    return static_cast<int>(te_interp(expression.c_str(), &error));
+}
+
+int calculate_prefix(const std::string& input) {
+    // Start parsing at the first character of the expression.
+    int position = 0;
+    return calculate_prefix(input, position);
+}
 
 // stuff to read from stdin placeholder
 int main() {
-    char input[] = "";
+    std::string prefixInput;
     // taking in input from the user for a prefix 
-    // std::cout << "Enter in a prefix: ";
-    // std::cin >> input; 
+    std::cout << "Enter in a prefix: ";
+    std::getline(std::cin, prefixInput);
+    int position = 0;
+    std::cout << "Result: " << calculate_prefix(prefixInput, position);
 
-    // manual checks
+    // Manual checks
     //====TEST 1====//
-    int expected = 5;
-    char testarr[] = {'+', '2', '3'};
+    int firstTestExpected = 5;
+    std::string firstTestInput = "+ 2 3";
 
-    // printing results 
-    std::stringstream ss;
-    ss << "expected: " << expected << " output:  " << (calculate_prefix(testarr));
-    std::string s = ss.str();
-    std::cout << s << '\n';
+    // Printing results.
+    int firstTestActual = calculate_prefix(firstTestInput);
+    std::cout << "Test 1 - expected: " << firstTestExpected
+              << ", actual: " << firstTestActual << '\n';
     //===TEST 2=======//
-
+    int secondTestExpected = 14;
+    std::string secondTestInput = "* 2 + 3 4";
+    
+    // Printing results.
+    int secondTestActual = calculate_prefix(secondTestInput);
+    std::cout << "Test 2 - expected: " << secondTestExpected
+              << ", actual: " << secondTestActual << '\n';
     //====TEST 3===//
+    int thirdTestExpected = 2000;
+    std::string thirdTestInput = "* + 20 30 40";
+
+    int thirdTestActual = calculate_prefix(thirdTestInput);
+    std::cout << "Test 3 - expected: " << thirdTestExpected
+              << ", actual: " << thirdTestActual << '\n';
 
     //====TEST 4====//
+    int fourthTestExpected = -1;
+    std::string fourthTestInput = "- 2 + 3 / 4 16";
 
-    return 1;
+    int fourthTestActual = calculate_prefix(fourthTestInput);
+    std::cout << "Test 4 - expected: " << fourthTestExpected
+              << ", actual: " << fourthTestActual << '\n';
+
+    return 0;
 }
 
 int main();
