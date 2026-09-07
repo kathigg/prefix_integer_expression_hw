@@ -50,8 +50,12 @@ int main() {
     //====TEST 1====//
     int expected = 5;
     char testarr[] = {'+', '2', '3'};
+
+    // printing results 
     std::stringstream ss;
     ss << "expected: " << expected << "output:  " << (expected == (calculate_prefix(testarr)));
+    std::string s = ss.str();
+    std::cout << s << '\n';
     //===TEST 2=======//
 
     //====TEST 3===//
